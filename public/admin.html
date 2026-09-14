@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频管理后台 · 农技示范视频库</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">🌾 <span>农技示范视频库 · 管理后台</span></div>
+    <nav><a href="/">农户端</a><a href="/admin.html" class="active">后台管理</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2 class="section-title">📥 CSV 批量导入</h2>
+    <p class="hint">
+      CSV 表头：标题、类别、作物、季节、适用地区、视频地址、时长、注意事项、简介、来源。
+      类别仅限 种植/养殖/病虫害/农机操作；季节填 春/夏/秋/冬，多个用英文逗号分隔。支持 UTF-8 与 GBK 编码。
+    </p>
+    <div class="import-row">
+      <input type="file" id="csv-file" accept=".csv">
+      <button class="btn btn-primary" id="btn-import">开始导入</button>
+      <a class="btn" href="/sample.csv" download>下载模板</a>
+    </div>
+    <div id="import-result" class="import-result" hidden></div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">📋 导入历史与错误报告</h2>
+    <table class="table">
+      <thead><tr><th>批次</th><th>文件名</th><th>总行数</th><th>成功</th><th>失败</th><th>导入时间</th><th>错误报告</th></tr></thead>
+      <tbody id="batch-body"></tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <h2 class="section-title">🎬 视频管理</h2>
+      <div class="admin-filters">
+        <select id="f-status">
+          <option value="">全部状态</option>
+          <option value="active">正常</option>
+          <option value="expired">已过期</option>
+        </select>
+        <select id="f-category">
+          <option value="">全部类别</option>
+          <option>种植</option><option>养殖</option>
+          <option>病虫害</option><option>农机操作</option>
+        </select>
+        <button class="btn" id="btn-filter">查询</button>
+      </div>
+    </div>
+    <table class="table">
+      <thead><tr>
+        <th>ID</th><th>标题</th><th>类别</th><th>作物</th><th>季节</th>
+        <th>适用地区</th><th>状态</th><th>操作</th>
+      </tr></thead>
+      <tbody id="video-body"></tbody>
+    </table>
+  </section>
+</main>
+
+<footer class="site-footer">县农业技术推广站 · 管理后台</footer>
+<script src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: agri-video-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass_2026
+      MYSQL_DATABASE: agri_video
+      MYSQL_USER: agri
+      MYSQL_PASSWORD: agri_pass_2026
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./src/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot_pass_2026"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    container_name: agri-video-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: agri
+      DB_PASSWORD: agri_pass_2026
+      DB_NAME: agri_video
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+
+volumes:
+  mysql-data:

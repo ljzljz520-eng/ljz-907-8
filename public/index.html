@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>农技示范视频库 · 农户端</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">🌾 <span>农技示范视频库</span></div>
+    <nav><a href="/" class="active">农户端</a><a href="/admin.html">后台管理</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="filter-bar card">
+    <div class="filter-row">
+      <label>类别
+        <select id="f-category">
+          <option value="">全部类别</option>
+          <option>种植</option><option>养殖</option>
+          <option>病虫害</option><option>农机操作</option>
+        </select>
+      </label>
+      <label>作物/对象
+        <select id="f-crop"><option value="">全部作物</option></select>
+      </label>
+      <label>季节
+        <select id="f-season">
+          <option value="">全部季节</option>
+          <option>春</option><option>夏</option><option>秋</option><option>冬</option>
+        </select>
+      </label>
+      <label class="grow">关键字
+        <input type="text" id="f-q" placeholder="搜索标题 / 作物 / 地区">
+      </label>
+      <button id="btn-search" class="btn btn-primary">筛选</button>
+      <button id="btn-reset" class="btn">重置</button>
+    </div>
+  </section>
+
+  <div class="result-meta" id="meta"></div>
+  <section class="video-grid" id="grid">
+    <div class="loading">加载中…</div>
+  </section>
+</main>
+
+<!-- 详情弹窗 -->
+<div class="modal-mask" id="modal-mask" hidden>
+  <div class="modal">
+    <button class="modal-close" id="modal-close">×</button>
+    <div id="modal-body"><div class="loading">加载中…</div></div>
+  </div>
+</div>
+
+<footer class="site-footer">县农业技术推广站 · 农技示范视频库</footer>
+<script src="/app.js"></script>
+</body>
+</html>
