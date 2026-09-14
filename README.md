@@ -47,6 +47,30 @@ npm start
 
 环境变量：`DB_HOST / DB_PORT / DB_USER / DB_PASSWORD / DB_NAME / PORT`。
 
+## 测试
+
+使用 Node 内置测试运行器，**无需安装额外依赖**：
+
+```bash
+npm test               # 运行 test/ 下全部测试
+npm run test:unit      # 仅单元测试（CSV 解析、编码识别、逐行校验；无需数据库）
+```
+
+- 纯单元测试在任何环境都能运行（无数据库时集成测试会自动跳过）。
+- 需要数据库的集成测试（覆盖中文“类别”写入、GBK 导入、判重、错误报告、CHECK 约束、连接字符集）：
+
+```bash
+TEST_DB=1 DB_HOST=127.0.0.1 DB_PORT=3306 DB_USER=root DB_PASSWORD= \
+  DB_NAME=agri_video_test npm run test:integration
+# 测试库不存在会自动创建（需建库权限）；也可直接 npm test，同样会读取上述 DB_* 环境变量
+```
+
+> 说明：历史版本 `category` 列使用中文 `ENUM`，在连接字符集不是 utf8mb4
+> 时会于 MySQL 8 严格模式下报 `Data truncated for column 'category'`。
+> 现改为 `VARCHAR(32)` + `CHECK` 约束，并在连接池握手及每条新连接上强制
+> `SET NAMES utf8mb4`；应用启动时还会把存量 ENUM 表**自动、幂等**迁移为
+> VARCHAR + CHECK（中文标签原样保留），无需手工处理旧数据卷。
+
 ## CSV 格式
 
 首行必须为表头（支持中英文字段名）：

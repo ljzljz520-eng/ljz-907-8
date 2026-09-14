@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { parse } = require('csv-parse/sync');
 const iconv = require('iconv-lite');
-const { pool } = require('./db');
+const { pool, ensureConnectionCharset } = require('./db');
 
 const CATEGORIES = ['种植', '养殖', '病虫害', '农机操作'];
 const SEASON_MAP = {
@@ -123,6 +123,8 @@ async function importCsv(buffer, originalName, reportDir) {
   let success = 0;
 
   try {
+    // 强制本次导入连接使用 utf8mb4，防止中文“类别”写入时被按其他字符集解释
+    await ensureConnectionCharset(conn);
     await conn.beginTransaction();
     const [batchRes] = await conn.query(
       'INSERT INTO import_batches (filename, total_rows) VALUES (?, ?)',
@@ -203,4 +205,11 @@ async function importCsv(buffer, originalName, reportDir) {
 }
 
 
-module.exports = { importCsv, CATEGORIES };
+module.exports = {
+  importCsv,
+  CATEGORIES,
+  decodeBuffer,
+  normalizeSeasons,
+  validateRow,
+  HEADER_MAP,
+};

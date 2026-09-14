@@ -7,7 +7,7 @@ USE agri_video;
 CREATE TABLE IF NOT EXISTS videos (
   id               INT UNSIGNED NOT NULL AUTO_INCREMENT,
   title            VARCHAR(200) NOT NULL COMMENT '视频标题',
-  category         ENUM('种植','养殖','病虫害','农机操作') NOT NULL COMMENT '类别',
+  category         VARCHAR(32)  NOT NULL COMMENT '类别：种植/养殖/病虫害/农机操作',
   crop             VARCHAR(100) NOT NULL COMMENT '作物/养殖对象，如水稻、生猪',
   seasons          VARCHAR(20)  NOT NULL DEFAULT '' COMMENT '适用季节，逗号分隔：春,夏,秋,冬',
   region           VARCHAR(300) NOT NULL DEFAULT '' COMMENT '适用地区',
@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS videos (
   KEY idx_crop (crop),
   KEY idx_category (category),
   KEY idx_expired (is_expired),
-  FULLTEXT KEY ft_search (title, crop, region)
+  FULLTEXT KEY ft_search (title, crop, region),
+  CONSTRAINT chk_category CHECK (category IN ('种植','养殖','病虫害','农机操作'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='农技视频';
 
 -- CSV 导入批次表

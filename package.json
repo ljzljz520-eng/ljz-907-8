@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+    "test": "node --test test/",
+    "test:unit": "node --test test/import.service.test.js test/csv.parse.test.js",
+    "test:integration": "TEST_DB=1 node --test test/db.integration.test.js"
   },
   "dependencies": {
     "csv-parse": "^5.5.6",
